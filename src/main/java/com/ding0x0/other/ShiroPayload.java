@@ -10,7 +10,7 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 
-public class ShiroPayload implements Payload {
+public class ShiroPayload extends Payload {
 
     public Object object;
     byte[] key;

@@ -2,7 +2,7 @@ package com.ding0x0.fastjson;
 
 import com.ding0x0.Payload;
 
-public class JDBCPayload implements Payload {
+public class jdbcPayload extends Payload {
 
     String url;
     String port;
@@ -26,7 +26,7 @@ public class JDBCPayload implements Payload {
             "    \"url\": \"\"\n" +
             "}";
 
-    public JDBCPayload(String url, String port, String user, String statement){
+    public jdbcPayload(String url, String port, String user, String statement){
         this.url = url;
         this.port = port;
         this.user = user;

@@ -1,6 +1,7 @@
 package com.ding0x0.yso.payloads;
 
 
+import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.Set;
@@ -12,7 +13,7 @@ import org.reflections.Reflections;
 
 
 @SuppressWarnings ( "rawtypes" )
-public interface ObjectPayload <T> {
+public interface ObjectPayload <T>  extends Serializable {
 
     /*
      * return armed payload object to be serialized that will execute specified

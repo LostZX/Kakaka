@@ -2,7 +2,7 @@ package com.ding0x0.yso;
 
 import com.ding0x0.Payload;
 
-public class PayloadWrapper implements Payload {
+public class PayloadWrapper extends Payload{
 
     public Object object;
 
@@ -11,7 +11,7 @@ public class PayloadWrapper implements Payload {
     }
 
     @Override
-    public String format() {
-        return null;
+    public Object format() {
+        return this.object;
     }
 }

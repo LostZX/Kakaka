@@ -9,6 +9,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -48,17 +49,21 @@ public class Process {
         }catch (IndexOutOfBoundsException e){
             cmd = "sb";
         }
+        String dirty = this.cmdline.getOptionValue("d");
         switch (this.payloadType){
             case "fastjson":
                 generate = new GenerateFastjsonPayload(this.payloadParam, type);
                 break;
             case "yso":
-                generate = new GenerateYsoPayload(type, cmd);
+                generate = new GenerateYsoPayload(type, cmd, dirty);
+                break;
             case "shiro":
                 String key = this.cmdline.getOptionValue("k", "kPH+bIxk5D2deZiIxcaaaA==");
                 String gadget = this.cmdline.getOptionValue("g");
-                generate = new GenerateShiroPayload(gadget, key, cmd);
+                generate = new GenerateShiroPayload(gadget, key, cmd, dirty);
+                break;
         }
+
         return generate.generatePayload();
     }
 

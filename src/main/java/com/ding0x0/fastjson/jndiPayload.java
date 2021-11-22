@@ -1,6 +1,8 @@
 package com.ding0x0.fastjson;
 
-public class JNDIPayload {
+import com.ding0x0.Payload;
+
+public class jndiPayload extends Payload {
 
     String jndi;
     String template = "[+] JdbcRowSetImpl\n"+
@@ -45,7 +47,7 @@ public class JNDIPayload {
             "       }\n" +
             "   }";
 
-    public JNDIPayload(String jndi){
+    public jndiPayload(String jndi){
         this.jndi = jndi;
     }
 
@@ -55,7 +57,7 @@ public class JNDIPayload {
     }
 
     public static void main(String[] args) {
-        JNDIPayload jndiPayload = new JNDIPayload("123");
+        jndiPayload jndiPayload = new jndiPayload("123");
         System.out.println(jndiPayload.format());
     }
 }

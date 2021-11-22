@@ -5,7 +5,7 @@ import com.ding0x0.utils.Stream;
 
 import java.io.IOException;
 
-public class UploadPayload implements Payload {
+public class uploadPayload extends Payload {
 
     public String lfpath;
     public String rfpath;
@@ -57,7 +57,7 @@ public class UploadPayload implements Payload {
             "    \"defaultEncoding\":\"UTF-8\"\n" +
             "}";
 
-    public UploadPayload(String lfpath, String rfpath){
+    public uploadPayload(String lfpath, String rfpath){
         this.lfpath = lfpath;
         this.rfpath = rfpath;
     }
