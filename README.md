@@ -24,6 +24,9 @@ java -jar Kakaka.jar -fastjson jndi -u 127.0.0.1
 
 支持：
   -ue  url编码
+  
   -he  html编码
+  
   -be  base64编码
+  
   -xe  xml编码
