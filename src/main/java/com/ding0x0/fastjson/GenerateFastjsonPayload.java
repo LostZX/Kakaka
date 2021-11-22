@@ -25,14 +25,4 @@ public class GenerateFastjsonPayload extends AbsGenerate {
         this.params = params;
         this.classname = classname;
     }
-
-
-    public static void main(String[] args) throws Exception {
-        ArrayList<String> a = new ArrayList<>();
-        a.add("http://127.0.0.1");
-        Generate generate = new GenerateFastjsonPayload(a,"DNS");
-        Payload o = (Payload) generate.generatePayload();
-        String payload = o.format();
-        System.out.println(payload);
-    }
 }

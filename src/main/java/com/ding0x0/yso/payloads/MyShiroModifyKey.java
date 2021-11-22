@@ -7,6 +7,7 @@ import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 import org.apache.catalina.core.ApplicationFilterConfig;
 import org.apache.catalina.core.StandardContext;
+import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.servlet.ShiroFilter;
 
@@ -31,14 +32,16 @@ public class MyShiroModifyKey extends AbstractTranslet {
             Method getFilter = config.getClass().getDeclaredMethod("getFilter");
             getFilter.setAccessible(true);
             ShiroFilter shiroFilter = (ShiroFilter) getFilter.invoke(config);
-            SecurityManager manager = (SecurityManager) shiroFilter.getSecurityManager();
+            DefaultSecurityManager manager = (DefaultSecurityManager) shiroFilter.getSecurityManager();
             Field cookie = manager.getClass().getSuperclass().getDeclaredField("rememberMeManager");
             cookie.setAccessible(true);
             CookieRememberMeManager cookieRememberMeManager = (CookieRememberMeManager) cookie.get(manager);
             byte[] key = java.util.Base64.getDecoder().decode("a3dvbmcAAAAAAAAAAAAAAA==");
             cookieRememberMeManager.setDecryptionCipherKey(key);
             cookieRememberMeManager.setEncryptionCipherKey(key);
-        }catch (Exception ignore){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

