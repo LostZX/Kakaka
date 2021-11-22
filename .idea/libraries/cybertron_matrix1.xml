@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="cybertron-matrix1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../cybertron-matrix1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../cybertron-matrix.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
