@@ -23,6 +23,7 @@ java -jar Kakaka.jar -fastjson jndi -u 127.0.0.1
 按照参数顺序编码
 
 支持：
+
   -ue  url编码
   
   -he  html编码
