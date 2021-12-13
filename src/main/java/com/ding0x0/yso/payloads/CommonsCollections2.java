@@ -21,6 +21,7 @@ import org.apache.commons.collections4.functors.InvokerTransformer;
 								Runtime.exec()
  */
 
+@Gadget
 public class CommonsCollections2 implements ObjectPayload {
 
 	@Override

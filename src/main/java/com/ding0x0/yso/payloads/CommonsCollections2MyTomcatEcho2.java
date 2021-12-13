@@ -20,6 +20,7 @@ import java.util.PriorityQueue;
 								Runtime.exec()
  */
 
+@Gadget
 public class CommonsCollections2MyTomcatEcho2 implements ObjectPayload {
 
 	@Override

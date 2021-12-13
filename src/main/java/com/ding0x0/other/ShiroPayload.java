@@ -28,7 +28,6 @@ public class ShiroPayload extends Payload {
         byte[] bytes = byteArrayOutputStream.toByteArray();
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         CipherService cipherService = cookieRememberMeManager.getCipherService();
-        byte[] key = cookieRememberMeManager.getCipherKey();
         ByteSource source = cipherService.encrypt(bytes, this.key);
         return source;
     }

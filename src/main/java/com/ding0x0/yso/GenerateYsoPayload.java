@@ -29,7 +29,7 @@ public class GenerateYsoPayload extends AbsGenerate {
         try {
             payload = obj.getObject(this.cmd);
             if (this.dirty != null){
-                DirtyDataWrapper wrapper = new DirtyDataWrapper(obj,Integer.parseInt(this.dirty));
+                DirtyDataWrapper wrapper = new DirtyDataWrapper(payload,Integer.parseInt(this.dirty));
                 payload = wrapper.doWrap();
             }
         }catch (Exception ignore){}

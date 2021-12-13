@@ -8,6 +8,7 @@ import com.ding0x0.yso.payloads.util.Reflections;
 import org.apache.commons.beanutils.BeanComparator;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
+@Gadget
 public class CommonsBeanutils1 implements ObjectPayload<Object> {
 
     public Object getObject(final String command) throws Exception {

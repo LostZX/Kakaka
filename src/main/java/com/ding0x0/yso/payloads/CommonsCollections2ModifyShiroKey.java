@@ -20,7 +20,7 @@ import java.util.PriorityQueue;
 								Runtime.exec()
  */
 
-public class CommonsCollections2ModifyKey implements ObjectPayload {
+public class CommonsCollections2ModifyShiroKey implements ObjectPayload {
 
 	@Override
 	public Object getObject(String command) throws Exception {

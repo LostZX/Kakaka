@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.util.PriorityQueue;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
+@Gadget
 public class CommonsBeanutils1ResinEcho implements ObjectPayload<Object> {
 
     public Object getObject(final String command) throws Exception {

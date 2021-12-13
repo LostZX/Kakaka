@@ -31,7 +31,7 @@ public class GenerateShiroPayload extends AbsGenerate {
             payload = obj.getObject(this.cmd);
         }catch (Exception ignore){}
         if (this.dirty != null){
-            DirtyDataWrapper wrapper = new DirtyDataWrapper(obj,Integer.parseInt(this.dirty));
+            DirtyDataWrapper wrapper = new DirtyDataWrapper(payload,Integer.parseInt(this.dirty));
             payload = wrapper.doWrap();
         }
         return new ShiroPayload(this.key, payload);

@@ -20,6 +20,7 @@ import java.util.PriorityQueue;
 								Runtime.exec()
  */
 
+@Gadget
 public class CommonsCollections2MaxHeaderSize implements ObjectPayload {
 
 	@Override

