@@ -12,7 +12,7 @@ public class Util {
         Set<Class<?>> classes = new Reflections(Gadget.class.getPackage().getName()).getTypesAnnotatedWith(Gadget.class);
         for (Class c :
                 classes) {
-            classNames.add(c.getName());
+            classNames.add(c.getSimpleName());
         }
         return classNames;
     }

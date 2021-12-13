@@ -22,7 +22,7 @@ public class Enums{
 
     public enum FastjsonType{
         bcel(new ArrayList<String>(){{
-            add("-rf");
+            add("-lf");
         }}),
         dns(new ArrayList<String>(){{
             add("-u");
@@ -68,10 +68,6 @@ public class Enums{
             sb.append("--------");
             return sb.toString();
         }
-
-//        public static ArrayList<String> get(String type) {
-//
-//        }
     }
 
     enum Encode{
@@ -103,6 +99,10 @@ public class Enums{
     }
 
 
+    public enum YsoGadget{
+        // 太多了不枚举了，直接用yso自己的方法
+    }
+
     public enum Args{
         k("default kPH+bIxk5D2deZiIxcaaaA=="),
         u("url or dns"),
@@ -123,7 +123,14 @@ public class Enums{
             return desc;
         }
 
-        public static String getHelper(){
+        public static String getYsoHelper(){
+            return "--------------------------------\n" +
+                    "[*] command -> -c command e.g. -c whoami\n" +
+                    "[*] dirty -> -d dirty data e.g. -d 2000\n" +
+                    "--------------------------------";
+        }
+
+        public static String getFastjsonHelper(){
             return "------------------------------------------------------------\n" +
                     "[*] bcel -> -lf bcel encode local file path, e.g. -lf /etc/exp.class\n" +
                     "[*] dns -> -u dnslog url, e.g. -u http://dnslog.cn\n" +
@@ -156,12 +163,10 @@ public class Enums{
         String r = Args.getAll();
         String t = Type.getAll();
         String e = Encode.getAll();
-        String h = Args.getHelper();
         String f = FastjsonType.getAll();
         System.out.println(r);
         System.out.println(t);
         System.out.println(e);
-        System.out.println(h);
         System.out.println(f);
     }
 }
