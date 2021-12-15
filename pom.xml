@@ -117,11 +117,6 @@
             <artifactId>resin</artifactId>
             <version>4.0.63</version>
         </dependency>
-        <dependency>
-            <groupId>com.ibm.jaxws</groupId>
-            <artifactId>thinclient</artifactId>
-            <version>8.5.0</version>
-        </dependency>
 
 
     </dependencies>
