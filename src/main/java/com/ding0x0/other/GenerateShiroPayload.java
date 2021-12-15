@@ -1,8 +1,6 @@
 package com.ding0x0.other;
 
 import com.ding0x0.AbsGenerate;
-import com.ding0x0.Payload;
-import com.ding0x0.yso.PayloadWrapper;
 import com.ding0x0.yso.payloads.DirtyDataWrapper;
 import com.ding0x0.yso.payloads.ObjectPayload;
 

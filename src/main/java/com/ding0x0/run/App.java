@@ -12,6 +12,7 @@ import com.ding0x0.yso.GenerateYsoPayload;
 import com.ding0x0.yso.Serializer;
 import com.ding0x0.utils.Enums.*;
 import java.util.*;
+import java.util.Base64.Encoder;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -61,8 +62,10 @@ public class App {
             if (index == -1){
                 if (type.equals("jdbc") && arg.equals("-un")){
                     outputArgs.add("yso_URLDNS_http://xxx.dnslog.cn");
+                    continue;
                 }else if (type.equals("jdbc") && arg.equals("-statement")){
                     outputArgs.add("com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor");
+                    continue;
                 }else {
                     System.out.println("params error, plz check input");
                     System.exit(1);
@@ -223,10 +226,19 @@ public class App {
             }
 
             // 编码
-            System.out.println("[+] input payload encode, default raw");
-            String input = scanner.nextLine();
-            String[] encodeList = input.split(" ");
+            System.out.println("[+] input payload encode, default raw, use -h get help");
+            boolean helpFlag = false;
+            String input;
+            input = scanner.nextLine();
+            if (!helpFlag && input.contains("-h")){
+                System.out.println(Encode.getAll());
+                helpFlag = true;
+            }
+            if (helpFlag){
+                input = scanner.nextLine();
+            }
 
+            String[] encodeList = input.split(" ");
             rawObj = object.format();
             if (input.trim().equals("") || input.trim().contains("-raw")){
                 if (!type.equals("yso")){

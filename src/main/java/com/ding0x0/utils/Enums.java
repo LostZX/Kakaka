@@ -70,7 +70,7 @@ public class Enums{
         }
     }
 
-    enum Encode{
+    public enum Encode{
         be("base64 encode"),
         ue("url encode"),
         xe("xml encode"),
@@ -89,10 +89,12 @@ public class Enums{
 
         public static String getAll(){
             StringBuilder sb = new StringBuilder();
+            sb.append("-----------------------------\n");
             for (Encode encode:
                     Encode.values()) {
                 sb.append("[*]  ").append("-").append(encode).append("  ").append(encode.getEncode()).append("\n");
             }
+            sb.append("-----------------------------");
             return sb.toString();
         }
 
