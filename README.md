@@ -42,3 +42,10 @@ java -jar Kakaka.jar fastjson jndi -u 127.0.0.1
   -be  base64编码
   
   -xe  xml编码
+
+
+## 参考
+
+@kezibei https://github.com/kezibei/Urldns
+
+@c0ny1 https://gv7.me/articles/2021/construct-java-detection-class-deserialization-gadget/
