@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 public class Enums{
     public enum Type{
-        fastjson, shiro, yso, bcel, log4j;
+        fastjson, shiro, yso, bcel, log4j, find;
 
         public static String getAll(){
             StringBuilder sb = new StringBuilder();

